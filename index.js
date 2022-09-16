@@ -6,7 +6,7 @@ const Geo = navigator.geolocation;
 Math.rad = function (val) { return val * Math.PI / 180; }
 
 const radius = 500; // in meters
-const center = {
+const circles = [{
     radius: radius, 
     latitude: 44.81161606873808,
     longitude: 20.465825835889994,
@@ -16,22 +16,11 @@ const center = {
     playing: false,
     source: null,
     buffer: null 
-}
-const other = {
-    radius: radius, 
-    latitude: 44.80956819176888,
-    longitude: 20.460889230034415,
-    name: 'other',
-    url: './DJ_3maj_-_Gracefully_Falling.mp3',
-    playCount: 0,
-    playing: false,
-    source: null,
-    buffer: null 
-}
+}]
 
 let currentPosition = null;
 
-const circles = [center, other];
+
 
 const playingMessage = ' is playing right now.';
 
