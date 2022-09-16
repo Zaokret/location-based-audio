@@ -6,7 +6,7 @@ const Geo = navigator.geolocation;
 Math.rad = function (val) { return val * Math.PI / 180; }
 
 const radius = 500; // in meters
-const circles = [{
+const center = {
     radius: radius, 
     latitude: 44.81161606873808,
     longitude: 20.465825835889994,
@@ -16,23 +16,10 @@ const circles = [{
     playing: false,
     source: null,
     buffer: null 
-}]
-
-let currentPosition = null;
-
-
-
-const playingMessage = ' is playing right now.';
-
-var playButton;
-function addPlayButton() {
-    const el = document.createElement('button');
-    el.innerText = 'Play'
-    el.setAttribute('id', 'play')
-    document.getElementById('controls').appendChild(el)
-    el.addEventListener('click', play);
-    playButton = el;
 }
+const circles = [center]
+let currentPosition = null;
+const playingMessage = ' is playing right now.';
 
 window.onload = function(){
     Geo.watchPosition(succesWatch, errorWatch)
@@ -109,21 +96,26 @@ function getDistance(coords1, coords2)
 
 function updateMusic(circle) {
     console.log('Inside of ' + circle.name)
-    const handler = () => {
-        play(circle)
+    debugger
+    if(!circle.buffer) {
+        loadSong(circle, function() {
+            
+            if(!playButton) {
+                addPlayButton();
+            }
+            playMusic(circle)
+        })
+    }
+    else {
+        playMusic(circle)
         if(!playButton) {
             addPlayButton();
         }
     }
-    if(!circle.buffer) {
-        loadSong(circle, handler)
-    }
-    else {
-        handler()
-    }
 }
 
-function play(circle) {
+function playMusic(circle) {
+    debugger
     if(!circle.playing) {
         document.getElementById('playing').innerText = extractNameFromUrl(circle.url) + playingMessage;
 
@@ -136,7 +128,6 @@ function play(circle) {
         circle.source.start();
         circle.playCount++;
     }
-    
 }
 
 function songEnded(circle) {
@@ -152,6 +143,21 @@ function createSource(circle) {
     circle.source.buffer = circle.buffer;
     circle.source.connect(context.destination);
     circle.source.addEventListener('ended', function() {songEnded(circle)}, {once: true})
+}
+
+var playButton;
+function addPlayButton() {
+    const el = document.createElement('button');
+    el.innerText = 'Play'
+    el.setAttribute('id', 'play')
+    document.getElementById('controls').appendChild(el)
+    el.addEventListener('click', function() {
+        if (context.state === 'suspended') {
+            context.resume();
+        }
+        circles.filter(circle=>circle.playing).forEach(circle=> circle.source.start())
+    });
+    playButton = el;
 }
 
 function updateMap(position) {
