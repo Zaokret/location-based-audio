@@ -12,11 +12,25 @@
         .green {
             border: 5px solid green;
         }
+        button {
+            padding: 15px;
+        }
+        body {
+            width: 310px;
+            margin: auto;
+        }
+        #controls {
+            display: flex;
+            justify-content: center;
+        }
         /* iframe{pointer-events: none;} */
     </style>
 </head>
 <body>
+    <h1>Location based audio</h1>
+    <p>Plays audio only around a set location in a radius. <br>Green = Inside the radius <br>Red = Outside the radius</p>
     <script src="./index.js"></script>
-    <iframe id="map" width="600" height="500" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+    <iframe id="map" width="300" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+    <div id="controls"></div>
 </body>
 </html>

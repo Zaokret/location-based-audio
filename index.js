@@ -21,7 +21,7 @@ function addPlayButton() {
     const el = document.createElement('button');
     el.innerText = 'Play'
     el.setAttribute('id', 'play')
-    document.body.appendChild(el)
+    document.getElementById('controls').appendChild(el)
     el.addEventListener('click', play);
     playButton = el;
 }
