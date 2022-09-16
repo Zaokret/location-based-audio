@@ -23,6 +23,19 @@ const playingMessage = ' is playing right now.';
 
 window.onload = function(){
     Geo.watchPosition(succesWatch, errorWatch)
+    addLocationsToPage();
+}
+
+function addLocationsToPage() {
+    const paragraph = document.getElementById('locations');
+    circles.forEach(circle=> {
+        const link = document.createElement('a')
+        link.setAttribute('href', buildGoogleMapUrl(circle, false))
+        link.setAttribute('target', '_blank')
+        link.innerText = extractNameFromUrl(circle.url) + ' (' + circle.radius + 'm radius)'
+        paragraph.appendChild(link)
+        paragraph.appendChild(document.createElement('br'))
+    })
 }
 
 function loadSong(songLocation, handler = null) {
@@ -96,7 +109,6 @@ function getDistance(coords1, coords2)
 
 function updateMusic(circle) {
     console.log('Inside of ' + circle.name)
-    debugger
     if(!circle.buffer) {
         loadSong(circle, function() {
             
@@ -115,7 +127,6 @@ function updateMusic(circle) {
 }
 
 function playMusic(circle) {
-    debugger
     if(!circle.playing) {
         document.getElementById('playing').innerText = extractNameFromUrl(circle.url) + playingMessage;
 
@@ -165,11 +176,15 @@ function updateMap(position) {
     map.setAttribute('src', buildGoogleMapUrl(position.coords))
 }
 
-function buildGoogleMapUrl({ longitude, latitude }) {
-    return 'https://maps.google.com/maps?q=' + 
+function buildGoogleMapUrl({ longitude, latitude }, embed=true) {
+    let url = 'https://maps.google.com/maps?q=' + 
     latitude + '+' + longitude + 
-    '&zoom=14&size=400x400&output=embed&center=' + 
+    '&zoom=14&size=400x400&center=' + 
     center.latitude + '+' + center.longitude; 
+    if(embed) {
+        url += '&output=embed'
+    }
+    return url;
     // TODO: maybe a way to center the map on the current location, but show the marker of the destination?
 }
 
