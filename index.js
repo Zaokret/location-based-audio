@@ -1,20 +1,39 @@
 window.AudioContext = window.AudioContext||window.webkitAudioContext;
 var context = new AudioContext();
-var source, buffer;
+var buffer;
 
 const Geo = navigator.geolocation;
 Math.rad = function (val) { return val * Math.PI / 180; }
 
 const radius = 500; // in meters
 const center = {
+    radius: radius, 
     latitude: 44.81161606873808,
     longitude: 20.465825835889994,
     name: 'center',
     url: './DJ_3maj_-_World_War_III.mp3',
-    radius: radius, // TODO: maybe make it customizable
-    buffer: null // TODO: load buffer if it's empty
+    playCount: 0,
+    playing: false,
+    source: null,
+    buffer: null 
 }
-const circles = [center];
+const other = {
+    radius: radius, 
+    latitude: 44.80956819176888,
+    longitude: 20.460889230034415,
+    name: 'other',
+    url: './DJ_3maj_-_Gracefully_Falling.mp3',
+    playCount: 0,
+    playing: false,
+    source: null,
+    buffer: null 
+}
+
+let currentPosition = null;
+
+const circles = [center, other];
+
+const playingMessage = ' is playing right now.';
 
 var playButton;
 function addPlayButton() {
@@ -27,19 +46,19 @@ function addPlayButton() {
 }
 
 window.onload = function(){
-    loadSong(center)
+    Geo.watchPosition(succesWatch, errorWatch)
 }
 
-function loadSong(songLocation) {
+function loadSong(songLocation, handler = null) {
     var request = new XMLHttpRequest();
     request.open('GET', songLocation.url, true); 
     request.responseType = 'arraybuffer';
     request.onload = function() {
         context.decodeAudioData(request.response, function(response) {
-
-            buffer = response;
             songLocation.buffer = response;
-            Geo.watchPosition(succesWatch, errorWatch)
+            if(handler) {
+                handler();
+            }
 
         }, function () { console.error('The request failed.'); } );
     }
@@ -47,14 +66,23 @@ function loadSong(songLocation) {
 }
 
 function succesWatch(position) {
-    const nearest = getNearestCircles(position.coords)
-    if(nearest.length > 0) {
-        updateMusic(nearest[0])
-        document.getElementById('map').setAttribute('class', 'green')
+    currentPosition = position
+    document.getElementById('coords').innerHTML = 'Longitude: ' + position.coords.longitude + '<br>Latitude: ' + position.coords.latitude
+
+    const nearest = getNearestCircles(currentPosition.coords)
+    const active = circles.find(circle => circle.playing)
+    if(!active) {
+        if(nearest.length > 0) {
+            updateMusic(nearest[0])
+            document.getElementById('map').setAttribute('class', 'green')
+        }
+        else {
+            console.log("Outside of all circles");
+            document.getElementById('map').setAttribute('class', 'red')
+        }
     }
     else {
-        console.log("Outside of all circles");
-        document.getElementById('map').setAttribute('class', 'red')
+        console.log('Already playing ' + active.name)
     }
     
     updateMap(position)
@@ -62,10 +90,14 @@ function succesWatch(position) {
 
 function getNearestCircles(point) {
     return circles
-    .map(circle => ({...circle, distance: getDistance(circle, point)}))
-    .filter(circle => circle.distance < radius)
-    .sort((a,b) => b.radius-a.radius) // smaller circle gets priority
-    .sort((a,b) => b.distance-a.distance) // for now every circle is the same
+    .map(circle => {
+        circle.distance = getDistance(circle, point)
+        return circle;
+    })
+    .filter(circle => circle.distance < circle.radius)
+    .sort((a,b) => a.playCount - b.playCount) // music with lower play count gets priority
+    // .sort((a,b) => b.radius-a.radius) // smaller circle gets priority
+    // .sort((a,b) => b.distance-a.distance) // closer circle gets priority
     
 }
 
@@ -88,39 +120,49 @@ function getDistance(coords1, coords2)
 
 function updateMusic(circle) {
     console.log('Inside of ' + circle.name)
+    const handler = () => {
+        play(circle)
+        if(!playButton) {
+            addPlayButton();
+        }
+    }
+    if(!circle.buffer) {
+        loadSong(circle, handler)
+    }
+    else {
+        handler()
+    }
+}
 
-    // TODO: create source and load buffer here
-    if(!source) {
-        createSource();
+function play(circle) {
+    if(!circle.playing) {
+        document.getElementById('playing').innerText = extractNameFromUrl(circle.url) + playingMessage;
+
+        circle.playing = true;
+        createSource(circle);
+        if (context.state === 'suspended') {
+            context.resume();
+        }
+    
+        circle.source.start();
+        circle.playCount++;
     }
     
-    if(!playButton) {
-        addPlayButton();
-    }
-
-    play()
 }
 
-function play() {
-    if (context.state === 'suspended') {
-        context.resume();
-    }
-
-    source.start();
+function songEnded(circle) {
+    document.getElementById('playing').innerText = 'Nothing' + playingMessage;
+    circle.playing = false;
+    circle.source.disconnect(context.destination);
+    succesWatch(currentPosition)
+    Geo.getCurrentPosition(succesWatch, errorWatch)
 }
 
-// TODO: create source from songLocation object
-function createSource() {
-    source = context.createBufferSource(); 
-    source.buffer = buffer;
-    source.connect(context.destination);
-    source.addEventListener('ended', function() {
-
-        source.disconnect(context.destination);
-        createSource();
-        Geo.getCurrentPosition(succesWatch, errorWatch)
-
-    }, {once: true})
+function createSource(circle) {
+    circle.source = context.createBufferSource(); 
+    circle.source.buffer = circle.buffer;
+    circle.source.connect(context.destination);
+    circle.source.addEventListener('ended', function() {songEnded(circle)}, {once: true})
 }
 
 function updateMap(position) {
@@ -138,4 +180,8 @@ function buildGoogleMapUrl({ longitude, latitude }) {
 
 function errorWatch(positionError) {
     console.log(positionError)
+}
+
+function extractNameFromUrl(url) {
+    return '"' + url.replace(new RegExp('_', 'g'), ' ').replace('./', '').replace('.mp3', '') + '"';
 }
