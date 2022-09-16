@@ -17,7 +17,19 @@ const center = {
     source: null,
     buffer: null 
 }
-const circles = [center]
+
+const djura = {
+    radius: radius, 
+    latitude: 44.81886606877587,
+    longitude: 20.39177773932104,
+    name: 'djura',
+    url: './Devourment - Choking on bile.mp3',
+    playCount: 0,
+    playing: false,
+    source: null,
+    buffer: null 
+}
+const circles = [djura, center]
 let currentPosition = null;
 const playingMessage = ' is playing right now.';
 
