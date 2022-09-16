@@ -16,6 +16,16 @@ const center = {
 }
 const circles = [center];
 
+var playButton;
+function addPlayButton() {
+    const el = document.createElement('button');
+    el.innerText = 'Play'
+    el.setAttribute('id', 'play')
+    document.body.appendChild(el)
+    el.addEventListener('click', play);
+    playButton = el;
+}
+
 window.onload = function(){
     loadSong(center)
 }
@@ -40,9 +50,11 @@ function succesWatch(position) {
     const nearest = getNearestCircles(position.coords)
     if(nearest.length > 0) {
         updateMusic(nearest[0])
+        document.getElementById('map').setAttribute('class', 'green')
     }
     else {
         console.log("Outside of all circles");
+        document.getElementById('map').setAttribute('class', 'red')
     }
     
     updateMap(position)
@@ -82,6 +94,14 @@ function updateMusic(circle) {
         createSource();
     }
     
+    if(!playButton) {
+        addPlayButton();
+    }
+
+    play()
+}
+
+function play() {
     if (context.state === 'suspended') {
         context.resume();
     }
