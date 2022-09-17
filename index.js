@@ -29,7 +29,20 @@ const djura = {
     source: null,
     buffer: null 
 }
-const circles = [djura, center]
+
+const soda = {
+    radius: 1000, 
+    latitude: 44.814272118194616,
+    longitude: 20.42197910623406,
+    name: 'djura',
+    url: './TOOL - Right In Two.mp3',
+    playCount: 0,
+    playing: false,
+    source: null,
+    buffer: null 
+}
+
+const circles = [djura, center, soda]
 let currentPosition = null;
 const playingMessage = ' is playing right now.';
 
