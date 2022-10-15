@@ -1,0 +1,35 @@
+[
+  {
+    "radius": 500,
+    "latitude": 44.81161606873808,
+    "longitude": 20.465825835889994,
+    "name": "center",
+    "url": "./DJ_3maj_-_World_War_III.mp3",
+    "playCount": 0,
+    "playing": false,
+    "source": null,
+    "buffer": null
+  },
+  {
+    "radius": 500,
+    "latitude": 44.81886606877587,
+    "longitude": 20.39177773932104,
+    "name": "djura",
+    "url": "./Devourment - Choking on bile.mp3",
+    "playCount": 0,
+    "playing": false,
+    "source": null,
+    "buffer": null
+  },
+  {
+    "radius": 500,
+    "latitude": 44.814272118194616,
+    "longitude": 20.42197910623406,
+    "name": "djura",
+    "url": "./TOOL - Right In Two.mp3",
+    "playCount": 0,
+    "playing": false,
+    "source": null,
+    "buffer": null
+  }
+]
