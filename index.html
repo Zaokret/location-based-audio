@@ -21,6 +21,12 @@
         background-attachment: fixed;
         background-size: cover;
       }
+
+      /* 
+      background-repeat: repeat;
+    background-attachment: fixed;
+    background-size: initial;
+    background-position: center; */
       h1,
       h2,
       h3,
@@ -48,7 +54,7 @@
         background-color: #3f3a2e;
       }
       body {
-        width: 310px;
+        width: 350px;
         margin: auto;
       }
       #controls {
@@ -70,9 +76,19 @@
         box-shadow: 0px 5px 10px 5px rgb(0, 0, 0, 0.5);
         filter: grayscale(100%) sepia(15%);
         border: 3px solid gray;
-      }
-      iframe {
         pointer-events: none;
+      }
+      @media only screen and (max-width: 600px) {
+        html {
+          background: url("./etienne-louis-boullee-basilique-vue-interieure_photo-bnf.jpeg");
+          background-repeat: repeat;
+          background-attachment: fixed;
+          background-size: initial;
+          background-position: center;
+        }
+        iframe {
+          margin-top: 150px;
+        }
       }
     </style>
   </head>
@@ -83,8 +99,8 @@
 
     <iframe
       id="map"
-      width="300"
-      height="300"
+      width="350"
+      height="350"
       frameborder="0"
       scrolling="no"
       marginheight="0"
