@@ -1,39 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Location based audio</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="./logo.png" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <title>Speaking Cartography</title>
     <style>
-        .red {
-            border: 5px solid red;
+      html {
+        font-family: sans-serif;
+        line-height: 1.5;
+        background: url("./Perspective-View-Interior-Metropolitan-Church-Etienne-Louis-Boullee.png");
+        background-repeat: round;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Poppins", sans-serif;
+      }
+
+      .active {
+        animation-name: pulsate;
+        animation-duration: 0.7s;
+        animation-direction: alternate;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in;
+      }
+      button:hover {
+        cursor: pointer;
+      }
+      button {
+        border-radius: 5px;
+        margin-top: 20px;
+        padding: 15px 30px;
+        color: #d7cdb7;
+        background-color: #3f3a2e;
+      }
+      body {
+        width: 310px;
+        margin: auto;
+      }
+      #controls {
+        display: flex;
+        justify-content: center;
+      }
+      @keyframes pulsate {
+        from {
+          box-shadow: 0px 5px 10px 5px rgb(0, 0, 0, 0.5);
         }
-        .green {
-            border: 5px solid green;
+        to {
+          box-shadow: 0px 5px 10px 5px rgb(0, 0, 0, 0.1);
         }
-        button {
-            padding: 15px;
-        }
-        body {
-            width: 310px;
-            margin: auto;
-        }
-        #controls {
-            display: flex;
-            justify-content: center;
-        }
-        /* iframe{pointer-events: none;} */
+      }
+
+      iframe {
+        margin-top: 200px;
+        border-radius: 50%;
+        box-shadow: 0px 5px 10px 5px rgb(0, 0, 0, 0.5);
+        filter: grayscale(100%) sepia(15%);
+        border: 3px solid gray;
+      }
+      iframe {
+        pointer-events: none;
+      }
     </style>
-</head>
-<body>
-    <h1>Location based audio</h1>
-    <p>Plays audio only around a set location in a radius. <br>Green = Inside the radius <br>Red = Outside the radius</p>
-    <div>Locations: <p id="locations"></p></div>
-    <p id="playing">Nothing is playing right now.</p>
-    <div>Your position: <p id="coords">loading...</p></div>
+  </head>
+  <body>
+    <!-- <h1>Location based audio</h1> -->
+
     <script src="./index.js"></script>
-    <iframe id="map" width="300" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+
+    <iframe
+      id="map"
+      width="300"
+      height="300"
+      frameborder="0"
+      scrolling="no"
+      marginheight="0"
+      marginwidth="0"
+    ></iframe>
     <div id="controls"></div>
-</body>
+    <!-- <div>
+      Your position:
+      <p id="coords">loading...</p>
+    </div>
+    <p>
+      Plays audio only around a set location in a radius. <br />Green = Inside
+      the radius <br />Red = Outside the radius
+    </p>
+    <div>
+      Locations:
+      <p id="locations"></p>
+    </div>
+    <p id="playing">Nothing is playing right now.</p> -->
+  </body>
 </html>
