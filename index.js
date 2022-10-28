@@ -44,7 +44,19 @@ const soda = {
   buffer: null,
 };
 
-const circles = [djura, center, soda];
+const teo = {
+  radius: 500,
+  latitude: 44.76244767845806,
+  longitude: 20.417428690194157,
+  name: "teo",
+  url: "./DJ 3maj - Here Be Dragons.mp3",
+  playCount: 0,
+  playing: false,
+  source: null,
+  buffer: null,
+};
+
+const circles = [djura, soda, teo, center];
 let currentPosition = null;
 const playingMessage = " is playing right now.";
 
