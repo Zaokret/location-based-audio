@@ -7,56 +7,56 @@ Math.rad = function (val) {
   return (val * Math.PI) / 180;
 };
 
-const radius = 500; // in meters
-const center = {
+const radius = 1000; // in meters
+const drugstore = {
   radius: radius,
-  latitude: 44.81161606873808,
-  longitude: 20.465825835889994,
-  name: "center",
-  url: "./DJ_3maj_-_World_War_III.mp3",
+  latitude: 44.819057843074006,
+  longitude: 20.489055399999998,
+  name: "Drugstore",
+  url: "./DJ 3maj - Here Be Dragons ( Original Mix ).mp3",
   playCount: 0,
   playing: false,
   source: null,
   buffer: null,
 };
 
-const djura = {
+const barutana = {
   radius: radius,
-  latitude: 44.81886606877587,
-  longitude: 20.39177773932104,
-  name: "djura",
-  url: "./Devourment - Choking on bile.mp3",
+  latitude: 44.82387756348147,
+  longitude: 20.447610532124834,
+  name: "Barutana",
+  url: "./DJ 3maj - Here Be Dragons ( Original Mix ).mp3",
   playCount: 0,
   playing: false,
   source: null,
   buffer: null,
 };
 
-const soda = {
-  radius: 1000,
-  latitude: 44.814272118194616,
-  longitude: 20.42197910623406,
-  name: "djura",
-  url: "./TOOL - Right In Two.mp3",
+const hangar = {
+  radius: radius,
+  latitude: 44.82622414602859,
+  longitude: 20.474560296618737,
+  name: "Hangar",
+  url: "./DJ 3maj - Here Be Dragons ( Original Mix ).mp3",
   playCount: 0,
   playing: false,
   source: null,
   buffer: null,
 };
 
-const teo = {
-  radius: 500,
-  latitude: 44.76244767845806,
-  longitude: 20.417428690194157,
-  name: "teo",
-  url: "./DJ 3maj - Here Be Dragons.mp3",
+const tunnel = {
+  radius: radius,
+  latitude: 45.2515032112469,
+  longitude: 19.863086828836362,
+  name: "Tunnel",
+  url: "./DJ 3maj - Here Be Dragons ( Original Mix ).mp3",
   playCount: 0,
   playing: false,
   source: null,
   buffer: null,
 };
 
-const circles = [djura, soda, teo, center];
+const circles = [hangar, barutana, hangar, tunnel];
 let currentPosition = null;
 const playingMessage = " is playing right now.";
 
@@ -242,14 +242,7 @@ function updateMap(position) {
 
 function buildGoogleMapUrl({ longitude, latitude }, embed = true) {
   let url =
-    "https://maps.google.com/maps?q=" +
-    latitude +
-    "+" +
-    longitude +
-    "&zoom=14&size=400x400&center=" +
-    center.latitude +
-    "+" +
-    center.longitude;
+    "https://maps.google.com/maps?q=" + latitude + "+" + longitude + "&z=14"; // &size=400x400
   if (embed) {
     url += "&output=embed";
   }
