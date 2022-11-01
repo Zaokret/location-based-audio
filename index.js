@@ -102,6 +102,9 @@ function loadSong(songLocation, handler = null) {
 }
 
 function succesWatch(position) {
+  const difference = currentPosition
+    ? getDistance(position, currentPosition)
+    : 99999999;
   currentPosition = position;
   const coordinates = document.getElementById("coords");
   if (coordinates) {
@@ -126,7 +129,9 @@ function succesWatch(position) {
     console.log("Already playing " + active.name);
   }
 
-  updateMap(position);
+  if (difference > 10) {
+    updateMap(position);
+  }
 }
 
 function getNearestCircles(point) {
