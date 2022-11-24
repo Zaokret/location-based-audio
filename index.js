@@ -18,6 +18,7 @@ const drugstore = {
   playing: false,
   source: null,
   buffer: null,
+  presave: "https://www.gate.fm/izLglREvL",
 };
 
 const barutana = {
@@ -30,6 +31,7 @@ const barutana = {
   playing: false,
   source: null,
   buffer: null,
+  presave: "https://www.gate.fm/izLglREvL",
 };
 
 const hangar = {
@@ -42,6 +44,7 @@ const hangar = {
   playing: false,
   source: null,
   buffer: null,
+  presave: "https://www.gate.fm/izLglREvL",
 };
 
 const tunnel = {
@@ -54,6 +57,7 @@ const tunnel = {
   playing: false,
   source: null,
   buffer: null,
+  presave: "https://www.gate.fm/izLglREvL",
 };
 
 const circles = [hangar, barutana, hangar, tunnel];
@@ -124,6 +128,11 @@ function succesWatch(position) {
     } else {
       console.log("Outside of all circles");
       document.getElementById("map").classList.remove("active");
+
+      document.getElementById("play").remove();
+      playButton = null;
+      document.getElementById("presave").remove();
+      presaveButton = null;
     }
   } else {
     console.log("Already playing " + active.name);
@@ -169,6 +178,7 @@ function updateMusic(circle) {
     loadSong(circle, function () {
       if (!playButton) {
         addPlayButton();
+        addPresaveButton();
       }
       playMusic(circle);
     });
@@ -176,6 +186,7 @@ function updateMusic(circle) {
     playMusic(circle);
     if (!playButton) {
       addPlayButton();
+      addPresaveButton();
     }
   }
 }
@@ -238,6 +249,23 @@ function addPlayButton() {
       .forEach((circle) => circle.source.start());
   });
   playButton = el;
+}
+
+var presaveButton;
+function addPresaveButton() {
+  const el = document.createElement("button");
+  el.innerText = "Pre-Save";
+  el.setAttribute("id", "presave");
+
+  document.getElementById("controls").appendChild(el);
+
+  el.addEventListener("click", function () {
+    circles
+      .filter((circle) => circle.playing)
+      .forEach((circle) => window.open(circle.presave, "_blank"));
+  });
+
+  presaveButton = el;
 }
 
 function updateMap(position) {
