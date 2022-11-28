@@ -129,10 +129,17 @@ function succesWatch(position) {
       console.log("Outside of all circles");
       document.getElementById("map").classList.remove("active");
 
-      document.getElementById("play").remove();
-      playButton = null;
-      document.getElementById("presave").remove();
-      presaveButton = null;
+      const playEl = document.getElementById("play");
+      if (playEl) {
+        playEl.remove();
+        playButton = null;
+      }
+
+      const saveEl = document.getElementById("presave");
+      if (saveEl) {
+        saveEl.remove();
+        presaveButton = null;
+      }
     }
   } else {
     console.log("Already playing " + active.name);
